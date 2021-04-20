@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * Normal Business Exception for project
+ *
  * @author nthack
  * @date 2021-04-20
  */
