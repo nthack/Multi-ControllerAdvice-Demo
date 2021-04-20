@@ -19,8 +19,8 @@
 
 ---
 ---
-
-## 全局的异常处理
+# 基本概念
+## Spring Boot全局异常处理
 通常来说，在`Spring Boot Web`项目中，有些异常信息是需要返回给调用者的。例如一些业务异常：账号异常、某个具体业务异常等。不同的异常有时候可能需要做不同的处理，一般项目中都会有多个异常。
 
 基本上为了代码可读性和整洁，很少会在Controller中try-catch捕获service抛出的异常。除了在某个Controller的方法中使用`@ExceptionHandler`外，更多情况下是使用`@ControllerAdvice`配合`@ExceptionHandler`进行全局的异常捕获和处理，方便快捷。
@@ -45,19 +45,25 @@
 
 
 # 全局异常处理类
-主要分为：
+全局异常处理类主要分为：
 - [单个全局异常处理类](#单个全局异常处理类)
   - [例子](#例子)
   - [所属分支](#所属分支)
   - [执行Application.java](#执行applicationjava)
-  - [主要的GlobalExceptionHandler.java](#主要的globalexceptionhandlerjava)
+  - [主要的全局异常处理类GlobalExceptionHandler.java](#主要的全局异常处理类GlobalExceptionHandler.java)
 - [多个全局异常处理类](#多个全局异常处理类)
+
+
+
 
 ## 单个全局异常处理类
 当抛出的异常种类不多的时候，一般使用单个`@ControllerAdvice`注解的类并配合`@ExceptionHandler`即可.
 
+
+
 ### 例子
 假设现在分别有：`BusinessException`、`AccountException`、`Exception`这三个异常，只要controller中没有进行try-catch，就进行全局异常处理，为了简单实现，这三个异常都会在Controller中直接抛出。
+
 
 
 ### 所属分支
@@ -66,15 +72,16 @@ git checkout single_controller_advice
 ```
 
 
-### 执行Application.java
-对应的api：
-* /account - 抛出账户异常
-* /business - 抛出业务异常
-* /exception - 抛出通用异常（一般很少抛出非RuntimeException的异常，防止傻逼兜底用的）
+### 测试
+执行`Application.java`
+访问对应的api：
+* `/account` - 抛出账户异常
+* `/business` - 抛出业务异常
+* `/exception` - 抛出通用异常（一般很少抛出非RuntimeException的异常，防止傻逼兜底用的）
 
 
 
-### 主要的GlobalExceptionHandler.java
+### 主要的全局异常处理类GlobalExceptionHandler.java
 下面代码中的三个方法，分别对应处理`ThrowExceptionsController.java`中抛出的：`BusinessException`、`AccountException`、`Exception`三个异常，异常抛出位置可以在Service也可以在Controller，看具体需要。
 
 
@@ -101,6 +108,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
+---
 
 
 
