@@ -5,23 +5,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+
 /**
+ * 账号异常类
+ *
  * @author nthack
- * @date 2021-04-20
+ * @date 2021-04-21
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BusinessException extends RuntimeException {
-    private Integer statusCode;
-
-    public BusinessException(String message, Integer statusCode) {
-        super(message);
-        this.statusCode = statusCode;
+public class AccountException extends BusinessException {
+    public AccountException(String message, Integer statusCode) {
+        super(message, statusCode);
     }
 
-    public BusinessException(String message) {
+    public AccountException(String message) {
         super(message);
     }
 }
