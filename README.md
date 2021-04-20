@@ -46,8 +46,12 @@
 
 # 全局异常处理类
 主要分为：
-* [单个全局异常处理类](#单个全局异常处理类)
-* [多个全局异常处理类](#多个全局异常处理类)
+- [单个全局异常处理类](#单个全局异常处理类)
+  - [例子](#例子)
+  - [所属分支](#所属分支)
+  - [执行Application.java](#执行applicationjava)
+  - [主要的GlobalExceptionHandler.java](#主要的globalexceptionhandlerjava)
+- [多个全局异常处理类](#多个全局异常处理类)
 
 ## 单个全局异常处理类
 当抛出的异常种类不多的时候，一般使用单个`@ControllerAdvice`注解的类并配合`@ExceptionHandler`即可.
@@ -70,7 +74,7 @@ git checkout single_controller_advice
 
 
 
-#### 主要的GlobalExceptionHandler.java
+### 主要的GlobalExceptionHandler.java
 下面代码中的三个方法，分别对应处理`ThrowExceptionsController.java`中抛出的：`BusinessException`、`AccountException`、`Exception`三个异常，异常抛出位置可以在Service也可以在Controller，看具体需要。
 
 
@@ -79,71 +83,71 @@ git checkout single_controller_advice
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Handle {@link BusinessException} in global
-     *
-     * @param ex {@link BusinessException}
-     * @return
-     */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity handleBusinessException(BusinessException ex){
-        // you can define a Standard Structure response data
-        // this just for testing, I wouldn't do like this
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("statusCode", ex.getStatusCode().toString());
-        map.put("msg", ex.getMessage());
+  /**
+   * Handle {@link BusinessException} in global
+   *
+   * @param ex {@link BusinessException}
+   * @return
+   */
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity handleBusinessException(BusinessException ex){
+    // you can define a Standard Structure response data
+    // this just for testing, I wouldn't do like this
+    Map<String, Object> map = new HashMap<>(2);
+    map.put("statusCode", ex.getStatusCode().toString());
+    map.put("msg", ex.getMessage());
 
-        log.warn("BusinessException ---> statusCode:{}, message:{}",ex.getStatusCode(), ex.getMessage());
+    log.warn("BusinessException ---> statusCode:{}, message:{}",ex.getStatusCode(), ex.getMessage());
 
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(map);
-    }
-
-
-    /**
-     * Handle {@link AccountException}
-     *
-     * @param ex {@link AccountException}
-     * @return
-     */
-    @ExceptionHandler(AccountException.class)
-    public ResponseEntity handleAccountException(AccountException ex){
-        // you can define a Standard Structure response data
-        // this just for testing, I wouldn't do like this
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("statusCode", ex.getStatusCode().toString());
-        map.put("msg", ex.getMessage());
-
-        log.warn("AccountException ---> statusCode:{}, message:{}",ex.getStatusCode(), ex.getMessage());
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(map);
-    }
+    return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(map);
+  }
 
 
-    /**
-     * Handle All Exception
-     * In normal, this might not be execute
-     * Just in case for some stupid throw non-RuntimeException
-     *
-     * @param ex
-     * @return
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception ex){
-        // you can define a Standard Structure response data
-        // this just for testing, I wouldn't do like this
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("msg", "This is a exception that not be specific, " + ex.getMessage());
+  /**
+   * Handle {@link AccountException}
+   *
+   * @param ex {@link AccountException}
+   * @return
+   */
+  @ExceptionHandler(AccountException.class)
+  public ResponseEntity handleAccountException(AccountException ex){
+    // you can define a Standard Structure response data
+    // this just for testing, I wouldn't do like this
+    Map<String, Object> map = new HashMap<>(2);
+    map.put("statusCode", ex.getStatusCode().toString());
+    map.put("msg", ex.getMessage());
 
-        log.warn("Exception ---> This is a exception that not be specific, message:{}", ex.getMessage());
+    log.warn("AccountException ---> statusCode:{}, message:{}",ex.getStatusCode(), ex.getMessage());
 
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(map);
-    }
+    return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(map);
+  }
+
+
+  /**
+   * Handle All Exception
+   * In normal, this might not be execute
+   * Just in case for some stupid throw non-RuntimeException
+   *
+   * @param ex
+   * @return
+   */
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity handleException(Exception ex){
+    // you can define a Standard Structure response data
+    // this just for testing, I wouldn't do like this
+    Map<String, Object> map = new HashMap<>(1);
+    map.put("msg", "This is a exception that not be specific, " + ex.getMessage());
+
+    log.warn("Exception ---> This is a exception that not be specific, message:{}", ex.getMessage());
+
+    return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(map);
+  }
 }
 ```
 
